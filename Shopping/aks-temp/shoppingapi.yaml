@@ -16,8 +16,8 @@ spec:
     spec:
       containers:
         - name: shoppingapi
-          image: 1305shoppingacr.azurecr.io/shoppingapi:v1
-          imagePullPolicy: IfNotPresent          
+          image: mehmetozkaya/shoppingapi:latest
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 80
           env:
@@ -31,20 +31,21 @@ spec:
           resources:
             requests:
               memory: "64Mi"
-              cpu: "0.1"
+              cpu: "250m"
             limits:
               memory: "128Mi"
-              cpu: "0.3"
-      imagePullSecrets:
-        - name: acr-secret
+              cpu: "500m"
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: shoppingapi-service
-spec:  
+spec:
+  type: NodePort
   selector:
     app: shoppingapi
   ports:
     - protocol: TCP
-      port: 80
+      port: 8000
+      targetPort: 80
+      nodePort: 31000
